@@ -10,7 +10,7 @@ auth_router = APIRouter(prefix='/auth', tags=['auth'])
 # ROTA DE INSERÇÃO
 @auth_router.post("/create_user")
 def create_user(nome, email, senha, db: Session = Depends(get_db)):
-    
+# TODO Incluir validação se o usuário existe e incluir cripitografia
     user = Usuario(
         nome=nome,
         email=email,
