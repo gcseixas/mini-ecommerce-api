@@ -19,10 +19,10 @@ class Usuario(Base):
     __tablename__ = "usuarios"
 
     id = Column("id", Integer, primary_key=True, autoincrement=True)
-    nome = Column("nome", String)
+    nome = Column("nome", String, nullable=False)
     email = Column("email", String, nullable=False)
-    senha = Column("senha", String)
-    ativo = Column("ativo", Boolean)
+    senha = Column("senha", String, nullable=False)
+    ativo = Column("ativo", Boolean, nullable=False)
     criado = Column(
         DateTime,
         server_default=func.now(),  # banco gera automaticamente
