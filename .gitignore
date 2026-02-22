@@ -16,3 +16,4 @@ __pycache__/
 alembic/versions/*.pyc
 
 .vscode
+.env

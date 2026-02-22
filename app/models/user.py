@@ -1,19 +1,8 @@
-from sqlalchemy import create_engine, Column, String, Integer, Boolean, Float, ForeignKey, DateTime
+from sqlalchemy import Column, String, Integer, Boolean, DateTime
 from sqlalchemy.sql import func
-from sqlalchemy.orm import declarative_base, relationship
-from database import Base
+from app.database import Base
+from sqlalchemy.orm import relationship
 
-# ==============================
-# MODEL: Usuario
-# ==============================
-
-# TODO Usuario
-# - id (PK)
-# - nome
-# - email (unique)
-# - senha_hash
-# - ativo
-# - data_criacao
 
 class Usuario(Base):
     __tablename__ = "usuarios"
@@ -28,6 +17,8 @@ class Usuario(Base):
         server_default=func.now(),  # banco gera automaticamente
         nullable=False
     )
+    
+    produtos = relationship("Produto", back_populates="owner")
 
     def __init__(self, nome, email, senha, ativo=True, admin=False):
         self.nome = nome
@@ -37,19 +28,7 @@ class Usuario(Base):
                 
 
 
-# ==============================
-# MODEL: Produto
-# ==============================
-
-# TODO Produto
-# - id (PK)
-# - nome
-# - descricao
-# - preco
-# - estoque
-# - ativo
-# - data_criacao
-
+# TODO Criar demais models para evitar erro de migration
 
 # ==============================
 # MODEL: Pedido
@@ -82,5 +61,5 @@ class Usuario(Base):
 
 # migrar o banco de dados
 
-# criar a migração: alembic revision --autogenerate -m "mensagem"
+# criar a migração: alembic revision --autogenerate -m "criação de vinculo de usuário na tabela de produto"
 # executar a migração: alembic upgrade head

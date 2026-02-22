@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from dependencys import get_db
-from models import Usuario
-from security import gerar_hash_senha, verificar_senha
-from schemas import UserCreate, UserLogin
+from app.dependencys import get_db
+from app.models.user import Usuario
+from app.core.security import gerar_hash_senha, verificar_senha, criar_token, get_current_user
+from app.schemas.user import UserCreate, UserLogin
 
 
 auth_router = APIRouter(prefix='/auth', tags=['auth'])
@@ -31,8 +31,6 @@ async def create_user(dados: UserCreate , db: Session = Depends(get_db)):
     return {'mensagem': f'Usuario cadastro com sucesso para o email - {user.email}'}
 
 
-# TODO criar lógica de token
-
 @auth_router.post('/login')
 async def login(dados: UserLogin, db: Session = Depends(get_db)):
     
@@ -44,10 +42,19 @@ async def login(dados: UserLogin, db: Session = Depends(get_db)):
     if not verificar_senha(dados.senha, str(usuario.senha)):
         raise HTTPException(status_code=401, detail='Senha inválida')
     
-    return {'msg': 'Login feito com sucesso'}
-
+    token = criar_token({'sub': usuario.email})
     
+    return {
+        "access_token": token,
+        "token_type": "bearer"
+        }
 
-# TODO criar lógica de validação do token
+@auth_router.get('/me')
+async def dados_usuario_atual(
+    usuario: Usuario = Depends(get_current_user)
+):
+    return {
+        "id": usuario.id,
+        "email": usuario.email
+    }
 
-# TODO fazer com que as demais rotas usem o token no header

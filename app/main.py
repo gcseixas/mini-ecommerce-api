@@ -4,17 +4,20 @@ import os
 
 load_dotenv()
 
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
+
 app = FastAPI()
 
 
-from auth_routes import auth_router
-from order_routes import order_router
+from app.routes import auth_router
+from app.routes import product_router
 
 app.include_router(auth_router)
-app.include_router(order_router)
+app.include_router(product_router)
 
 
-# para rodar o nosso código, executar no terminal: uvicorn main:app --reload
+# para rodar o nosso código, executar no terminal: uvicorn app.main:app --reload
 
 # endpoint:
 # dominio.com/pedidos
