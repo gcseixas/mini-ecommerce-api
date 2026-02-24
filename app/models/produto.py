@@ -23,9 +23,10 @@ class Produto(Base):
         nullable=False
     )
     
-    def __init__ (self, nome, descricao, preco, estoque=0, ativo=True):
+    def __init__(self, nome, descricao, preco, estoque=0, ativo=True, user_id=None):
         self.nome = nome
         self.descricao = descricao
         self.preco = preco
         self.estoque = estoque
         self.ativo = ativo
+        self.user_id = user_id

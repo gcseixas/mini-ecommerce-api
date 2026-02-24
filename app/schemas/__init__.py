@@ -1,5 +1,5 @@
 from .user import UserCreate, UserLogin
-from .produto import CreateProduct
+from .produto import CreateProduct, ProdutoResponse
 from .item_pedido import ItemPedidoCreate, ItemPedidoResponse
 from .pedido import PedidoCreate, PedidoResponse
 
@@ -10,5 +10,6 @@ __all__ = [
     "ItemPedidoCreate",
     "ItemPedidoResponse",
     "PedidoCreate",
-    "PedidoResponse"
+    "PedidoResponse",
+    "ProdutoResponse"
 ]

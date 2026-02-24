@@ -12,10 +12,17 @@ class Usuario(Base):
     email = Column("email", String, nullable=False)
     senha = Column("senha", String, nullable=False)
     ativo = Column("ativo", Boolean, nullable=False)
+    admin = Column("admin", Boolean, nullable=False)
     criado = Column(
         DateTime,
         server_default=func.now(),  # banco gera automaticamente
         nullable=False
+    )
+    
+    pedidos = relationship(
+    "Pedido",
+    back_populates="usuario",
+    cascade="all, delete"
     )
     
     produtos = relationship("Produto", back_populates="owner")
@@ -25,6 +32,8 @@ class Usuario(Base):
         self.email = email
         self.senha = senha
         self.ativo = ativo
+        self.admin = admin
+        
                 
 
 ###--------------------------------------------------------------------####
@@ -33,5 +42,5 @@ class Usuario(Base):
 
 # migrar o banco de dados
 
-# criar a migração: alembic revision --autogenerate -m "criacao inicial completa"
+# criar a migração: alembic revision --autogenerate -m "Criacao inicial"
 # executar a migração: alembic upgrade head
