@@ -1,4 +1,3 @@
-
 from .user import Usuario
 from .produto import Produto
 from .pedido import Pedido

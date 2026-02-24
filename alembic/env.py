@@ -18,7 +18,8 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from app.models.user import *
+from app.database import Base
+import app.models  # força carregar todos os models
 
 target_metadata = Base.metadata
 
