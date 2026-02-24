@@ -4,7 +4,6 @@ from app.database import Base
 from sqlalchemy.sql import func
 
 
-# TODO Colocar o id como obrigatório, uma vez que não é possível sem autenticação
 class Produto(Base):
     __tablename__ = 'produtos'
     
@@ -14,7 +13,7 @@ class Produto(Base):
     preco = Column("preco", Float, nullable=False)
     estoque = Column("estoque", Integer)
     ativo = Column("ativo", Boolean, nullable=False)
-    user_id = Column(Integer, ForeignKey("usuarios.id"))
+    user_id = Column(Integer, ForeignKey("usuarios.id"), nullable=False)
 
     owner = relationship("Usuario", back_populates="produtos")
     

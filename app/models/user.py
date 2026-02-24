@@ -27,39 +27,11 @@ class Usuario(Base):
         self.ativo = ativo
                 
 
-
-# TODO Criar demais models para evitar erro de migration
-
-# ==============================
-# MODEL: Pedido
-# ==============================
-
-# TODO Pedido
-# - id (PK)
-# - usuario_id (FK -> Usuario.id)
-# - status (pendente, pago, enviado, cancelado)
-# - valor_total
-# - data_criacao
-
-
-# ==============================
-# MODEL: ItemPedido
-# ==============================
-
-# TODO ItemPedido
-# - id (PK)
-# - pedido_id (FK -> Pedido.id)
-# - produto_id (FK -> Produto.id)
-# - quantidade
-# - preco_unitario
-
-
-
 ###--------------------------------------------------------------------####
 # executa a criação dos metadados do seu banco (cria efetivamente o banco de dados)
 
 
 # migrar o banco de dados
 
-# criar a migração: alembic revision --autogenerate -m "criação de vinculo de usuário na tabela de produto"
+# criar a migração: alembic revision --autogenerate -m "criacao inicial completa"
 # executar a migração: alembic upgrade head
