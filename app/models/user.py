@@ -26,6 +26,13 @@ class Usuario(Base):
     )
     
     produtos = relationship("Produto", back_populates="owner")
+    
+    carrinho = relationship(
+        "Carrinho",
+        back_populates="usuario",
+        uselist=False,   # ← isso define 1:1
+        cascade="all, delete-orphan"
+    )
 
     def __init__(self, nome, email, senha, ativo=True, admin=False):
         self.nome = nome
@@ -42,5 +49,5 @@ class Usuario(Base):
 
 # migrar o banco de dados
 
-# criar a migração: alembic revision --autogenerate -m "Criacao inicial"
+# criar a migração: alembic revision --autogenerate -m "Criação com correção"
 # executar a migração: alembic upgrade head

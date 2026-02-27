@@ -17,6 +17,8 @@ class Produto(Base):
 
     owner = relationship("Usuario", back_populates="produtos")
     
+    carrinho = relationship("Carrinho", back_populates='produto')
+    
     data_criacao = Column(
         DateTime,
         server_default=func.now(), 
