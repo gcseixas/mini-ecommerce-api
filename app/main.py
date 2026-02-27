@@ -13,10 +13,12 @@ app = FastAPI()
 from app.routes import auth_router
 from app.routes import product_router
 from app.routes import kart_router
+from app.routes import order_router
 
 app.include_router(auth_router)
 app.include_router(product_router)
 app.include_router(kart_router)
+app.include_router(order_router)
 
 
 # para rodar o nosso código, executar no terminal: uvicorn app.main:app --reload
