@@ -5,7 +5,7 @@ from app.schemas.kart import CarrinhoItemCreate, Updatekart
 from app.models.user import Usuario
 from app.models.kart import ItensCarrinho
 from app.models.produto import Produto
-from app.services.base_service import atualizar_campos_model
+from app.services.base_service import BaseService
 from app.core.security import get_current_user
 
 kart_router = APIRouter(prefix='/kart', tags=['kart'], dependencies=[Depends(get_current_user)])
@@ -52,7 +52,7 @@ async def edit_item_kart(
     
     item = db.query(ItensCarrinho).filter(ItensCarrinho.id == id_item_kart).first()
         
-    item_atualizar = atualizar_campos_model(item, dados)
+    item_atualizar = BaseService.atualizar_campos(item, dados)
     
     db.commit()
     db.refresh(item_atualizar)    

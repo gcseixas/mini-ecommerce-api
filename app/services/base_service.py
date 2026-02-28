@@ -1,13 +1,15 @@
+class BaseService:
 
-def atualizar_campos_model(item, dados):
-    """A função recebe:
-        - Model onde será atualizado
-        - Esquema da atualização    
-    """
-    campos_atualizacao = dados.dict(exclude_unset=True)
+    @staticmethod
+    def atualizar_campos(model, dados):
+        valores = dados.model_dump(exclude_unset=True)
+        for campo, valor in valores.items():
+            setattr(model, campo, valor)
+        return model
     
-    for campo, valor in campos_atualizacao.items():
-        setattr(item, campo, valor)
-    
-    return item
-    
+    @staticmethod
+    def buscar_por_id(db, model, id):
+        instancia = db.query(model).filter(model.id == id).first()
+        if not instancia:
+            raise ValueError(f"{model.__name__} não encontrado")
+        return instancia
