@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import Optional
 
 class CarrinhoItemCreate(BaseModel):
     produto_id: int
@@ -7,4 +7,8 @@ class CarrinhoItemCreate(BaseModel):
     
     class Config:
         from_attributes = True
-    
+        
+        
+class Updatekart(BaseModel):
+    produto_id: Optional[int] = None
+    quantidade: Optional[int] = None    
