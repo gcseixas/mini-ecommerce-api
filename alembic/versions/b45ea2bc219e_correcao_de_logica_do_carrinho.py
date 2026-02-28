@@ -1,8 +1,8 @@
-"""Criação com correção
+"""Correcao de logica do carrinho
 
-Revision ID: 32d9ef45ae54
+Revision ID: b45ea2bc219e
 Revises: 
-Create Date: 2026-02-27 19:49:48.418682
+Create Date: 2026-02-28 12:16:43.353289
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '32d9ef45ae54'
+revision: str = 'b45ea2bc219e'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None

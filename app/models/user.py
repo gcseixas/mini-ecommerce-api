@@ -27,10 +27,9 @@ class Usuario(Base):
     
     produtos = relationship("Produto", back_populates="owner")
     
-    carrinho = relationship(
-        "Carrinho",
+    itens_carrinho = relationship(
+        "ItensCarrinho",
         back_populates="usuario",
-        uselist=False,   # ← isso define 1:1
         cascade="all, delete-orphan"
     )
 
@@ -49,5 +48,5 @@ class Usuario(Base):
 
 # migrar o banco de dados
 
-# criar a migração: alembic revision --autogenerate -m "Criação com correção"
+# criar a migração: alembic revision --autogenerate -m "Correcao nome de tabela carrinho"
 # executar a migração: alembic upgrade head

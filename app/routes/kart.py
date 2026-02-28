@@ -3,28 +3,29 @@ from app.dependencys import get_db
 from sqlalchemy.orm import Session
 from app.schemas.kart import CarrinhoItemCreate
 from app.models.user import Usuario
-from app.models.kart import Carrinho
+from app.models.kart import ItensCarrinho
+from app.models.produto import Produto
 from app.core.security import get_current_user
 
 kart_router = APIRouter(prefix='/kart', tags=['kart'], dependencies=[Depends(get_current_user)])
 
 
-#TODO Criar rota para fazer insert no carrinho
 @kart_router.post('/create-item-kart')
 async def create_item_kart(
     dados: CarrinhoItemCreate, 
     db: Session = Depends(get_db),
     usuario: Usuario = Depends(get_current_user)
     ):
-#TODO verificar se o produto existe
 
+    produto = db.query(Produto).filter(Produto.id == dados.produto_id).first()
+    
+    if not produto:
+        raise HTTPException(status_code=400, detail='Produto não encontrado')
 
-
-#TODO verificar se o produto está ativo
-
-#TODO Fazer cálculo de estoque
-
-    item_carrinho = Carrinho(
+    if not produto.ativo: # type: ignore
+        raise HTTPException(status_code=400, detail='Produto inativo no momento')
+        
+    item_carrinho = ItensCarrinho(
         usuario_id=usuario.id,
         produto_id=dados.produto_id,
         quantidade=dados.quantidade

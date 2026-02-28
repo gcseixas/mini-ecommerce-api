@@ -3,8 +3,8 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.database import Base
 
-class Carrinho(Base):
-    __tablename__ = "carrinhos"
+class ItensCarrinho(Base):
+    __tablename__ = "itensCarrinho"
 
     id = Column(Integer, primary_key=True, index=True)
 
@@ -18,7 +18,7 @@ class Carrinho(Base):
     
 
     # Relacionamentos
-    usuario = relationship("Usuario", back_populates="carrinho")
+    usuario = relationship("Usuario", back_populates="itens_carrinho")
     
     produto = relationship("Produto", back_populates='carrinho')
     

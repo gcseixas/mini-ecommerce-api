@@ -4,7 +4,7 @@ from app.dependencys import get_db
 from sqlalchemy.orm import Session
 from app.schemas.kart import CarrinhoItemCreate
 from app.models.user import Usuario
-from app.models.kart import Carrinho
+from app.models.kart import ItensCarrinho
 from app.core.security import get_current_user
 
 
