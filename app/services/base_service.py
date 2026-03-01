@@ -10,6 +10,19 @@ class BaseService:
     @staticmethod
     def buscar_por_id(db, model, id):
         instancia = db.query(model).filter(model.id == id).first()
-        if not instancia:
-            raise ValueError(f"{model.__name__} não encontrado")
         return instancia
+    
+    
+    @staticmethod
+    def criar(db, model, dados):
+        nova_instancia = model(**dados.model_dump())
+        db.add(nova_instancia)
+        db.commit()
+        db.refresh(nova_instancia)
+        return nova_instancia
+    
+
+    @staticmethod
+    def deletar(db, instancia):
+        db.delete(instancia)
+        db.commit()

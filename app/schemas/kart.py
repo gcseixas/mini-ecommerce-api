@@ -12,3 +12,7 @@ class CarrinhoItemCreate(BaseModel):
 class Updatekart(BaseModel):
     produto_id: Optional[int] = None
     quantidade: Optional[int] = None    
+    
+
+
+    

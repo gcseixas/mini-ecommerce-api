@@ -8,7 +8,7 @@ from app.models.kart import ItensCarrinho
 from app.core.security import get_current_user
 
 
-#TODO Criar rota para fazer insert no carrinho
+#TODO Criar rota para fazer insert no itensPedido
 
 order_router = APIRouter(prefix='/order', tags=['order'], dependencies=[Depends(get_current_user)])
 

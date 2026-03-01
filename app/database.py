@@ -9,6 +9,6 @@ engine = create_engine(
     connect_args={"check_same_thread": False}  # obrigatório no SQLite
 )
 
-SessionLocal = sessionmaker(bind=engine)
+SessionLocal = sessionmaker(bind=engine) # type: ignore
 
 Base = declarative_base()

@@ -1,11 +1,24 @@
-import requests
+from app.database import SessionLocal
+from app.models.kart import ItensCarrinho
 
-headers = {
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnY3NlaXhhczAxQGdtYWlsLmNvbSIsImV4cCI6MTc3MTcwMjEwMX0.d95R6KnCy96z6Eh9yX7wIietthQ2lkc7SfpbqVRpRHs"
-}
+def create_item_kart(db):
 
-requisicao = requests.get("http://127.0.0.1:8000/auth/me", headers=headers)
-print(requisicao)
-dados = requisicao.json()
+    for i in range(100000):
+        item = ItensCarrinho(
+            usuario_id=1,
+            produto_id=1,
+            quantidade=10
+        )
+        print(f'Item{i} criado com sucesso')
+        db.add(item)
 
-print(dados)
+        if i % 1000 == 0:
+            db.commit()
+
+    db.commit()
+
+
+# Criando sessão manualmente
+db = SessionLocal()
+create_item_kart(db)
+db.close()
