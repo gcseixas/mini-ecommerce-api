@@ -5,7 +5,7 @@ from app.models.user import Usuario
 from app.models.kart import ItensCarrinho
 from app.models.pedido import Pedido
 from app.models.item_pedido import ItemPedido
-from app.schemas.orders import PedidoCreate
+from app.schemas.orders import PedidoCreate, PedidoCompletoResponse, PedidoResponse
 from app.core.security import get_current_user
 
 
@@ -127,7 +127,37 @@ async def cancelar_pedido(
         'msg': f'Pedido nº{pedido_id} cancelado com sucesso'
     }  
 
-#TODO Criar rota para fazer visualização de um pedido e seus itens
 
-#TODO Criar rota para fazer visualização todos os pedidos
+@order_router.get('/visualizar-pedido-itens/{id_pedido}', response_model=PedidoCompletoResponse)
+async def visualizar_pedido_itens(
+    id_pedido: int, 
+    db: Session = Depends(get_db),
+    usuario: Usuario = Depends(get_current_user)
+    ):
+    
+    pedido = db.query(Pedido).filter(Pedido.id == id_pedido).first()
+    
+    if not pedido:
+        raise HTTPException(status_code=400, detail='Pedido não encontrado')
+    
+    if pedido.usuario_id != usuario.id: # type: ignore
+        raise HTTPException(status_code=400, detail='Pedido não pertence ao usuário')
+    
+    return pedido
+
+
+@order_router.get('/visualizar-pedidos', response_model=list[PedidoResponse])
+async def visualizar_pedidos(
+    db: Session = Depends(get_db),
+    usuario: Usuario = Depends(get_current_user)
+    ):
+    
+    pedidos = db.query(Pedido).filter(Pedido.usuario_id == usuario.id).all()
+    
+    if not pedidos:
+        raise HTTPException(status_code=400, detail='Usuário não possui pedidos')
+    
+    return pedidos
+
+
 

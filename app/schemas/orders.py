@@ -9,7 +9,7 @@ class PedidoCreate(BaseModel):
         
 class PedidoCompletoResponse(BaseModel):
     id: int
-    valor: float
+    valor_total: float
     status: str
     itens: list[PedidoItensResponse]
     
@@ -18,9 +18,8 @@ class PedidoCompletoResponse(BaseModel):
         
         
 class PedidoItensResponse(BaseModel):
-    nome: str
-    preco_unitario: float
     produto: ProdutoResumo
+    preco_unitario: float
     valor_item: float
     
     class Config:
@@ -32,3 +31,13 @@ class ProdutoResumo(BaseModel):
 
     class Config:
         from_attributes = True
+        
+        
+class PedidoResponse(BaseModel):
+    id: int
+    valor_total: float
+    status: str
+    
+    class Config:
+        from_attributes = True
+        

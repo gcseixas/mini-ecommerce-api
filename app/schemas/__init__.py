@@ -1,7 +1,7 @@
 from .user import UserCreate, UserLogin
 from .produto import CreateProduct, ProdutoResponse
 from .kart import CarrinhoItemCreate
-from .orders import PedidoCreate, PedidoCompletoResponse, PedidoItensResponse
+from .orders import PedidoCreate, PedidoCompletoResponse, PedidoItensResponse, PedidoResponse
 
 __all__ = [
     "UserCreate",
@@ -11,5 +11,6 @@ __all__ = [
     "CarrinhoItemCreate",
     "PedidoCreate",
     "PedidoCompletoResponse",
-    "PedidoItensResponse"
+    "PedidoItensResponse",
+    "PedidoResponse"
 ]
