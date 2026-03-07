@@ -70,18 +70,64 @@ async def create_pedido(
     }
 
 
-
-
-#TODO Criar rota para fazer edição no status do pedido
-
-@order_router.post('/create-pedido')
-async def create_pedido(
-    dados: PedidoCreate, 
+@order_router.put('/concluir-pedido/{id_pedido}')
+async def concluir_pedido(
+    id_pedido: int, 
     db: Session = Depends(get_db),
     usuario: Usuario = Depends(get_current_user)
     ):
-    ...
+    
+    pedido = db.query(Pedido).filter(Pedido.id == id_pedido).first()
+    
+    if not pedido:
+        raise HTTPException(status_code=400, detail='Pedido não encontrado')
+    
+    if pedido.usuario_id != usuario.id: # type: ignore
+        raise HTTPException(status_code=400, detail='Pedido não pertence ao usuário')
+    
+    if pedido.status == 'concluido' or pedido.status == 'cancelado':  # type: ignore
+        raise HTTPException(status_code=400, detail=f'Não é possível concluir um pedido com status de {pedido.status}')
+    
+    pedido_id = pedido.id
+    
+    pedido.status = 'concluido'  # type: ignore
+    
+    db.commit()
+    
+    return{
+        'msg': f'Pedido nº{pedido_id} concluído com sucesso'
+    }   
 
+
+@order_router.put('/cancelar-pedido/{id_pedido}')
+async def cancelar_pedido(
+    id_pedido: int, 
+    db: Session = Depends(get_db),
+    usuario: Usuario = Depends(get_current_user)
+    ):
+    
+    # produto = db.query(Produto).filter(Produto.id == dados.produto_id).first()
+
+    pedido = db.query(Pedido).filter(Pedido.id == id_pedido).first()
+    
+    if not pedido:
+        raise HTTPException(status_code=400, detail='Pedido não encontrado')
+    
+    if pedido.usuario_id != usuario.id: # type: ignore
+        raise HTTPException(status_code=400, detail='Pedido não pertence ao usuário')
+    
+    if pedido.status == 'concluido' or pedido.status == 'cancelado':  # type: ignore
+        raise HTTPException(status_code=400, detail=f'Não é possível cancelar um pedido com status de {pedido.status}')
+    
+    pedido_id = pedido.id
+    
+    pedido.status = 'cancelado'  # type: ignore
+    
+    db.commit()
+    
+    return{
+        'msg': f'Pedido nº{pedido_id} cancelado com sucesso'
+    }  
 
 #TODO Criar rota para fazer visualização de um pedido e seus itens
 
