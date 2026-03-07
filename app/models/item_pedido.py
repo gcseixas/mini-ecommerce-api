@@ -19,3 +19,7 @@ class ItemPedido(Base):
     # Relacionamentos
     pedido = relationship("Pedido", back_populates="itens")
     produto = relationship("Produto")
+    
+    @property
+    def valor_item(self):
+        return self.preco_unitario * self.quantidade

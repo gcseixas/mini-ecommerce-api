@@ -105,8 +105,6 @@ async def cancelar_pedido(
     db: Session = Depends(get_db),
     usuario: Usuario = Depends(get_current_user)
     ):
-    
-    # produto = db.query(Produto).filter(Produto.id == dados.produto_id).first()
 
     pedido = db.query(Pedido).filter(Pedido.id == id_pedido).first()
     
