@@ -33,7 +33,7 @@ def verificar_senha(senha_digitada: str, senha_hash: str) -> bool:
 
 def criar_token(dados: dict):
     dados_copia = dados.copy()
-    expira = datetime.utcnow() + timedelta(minutes=30)
+    expira = datetime.utcnow() + timedelta(hours=12)
     dados_copia.update({"exp": expira})
     return jwt.encode(dados_copia, str(SECRET_KEY), algorithm=str(ALGORITHM))
 
