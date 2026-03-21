@@ -16,7 +16,7 @@ async def create_product(
     ):
     
     if usuario.admin is False: # type: ignore
-        raise HTTPException(status_code=400, detail='Você não possui permissão para adicionar produto')
+        raise HTTPException(status_code=403, detail='Você não possui permissão para adicionar produto')
     
     else:    
         
@@ -53,7 +53,7 @@ async def list_product(
     produto = db.query(Produto).filter(Produto.id == id).first()
     
     if not produto:
-        raise HTTPException(status_code=400, detail='Produto não encontrado')
+        raise HTTPException(status_code=404, detail='Produto não encontrado')
     
     return produto
 
@@ -67,12 +67,12 @@ async def edit_product(
     ):
     
     if usuario.admin is False: # type: ignore
-        raise HTTPException(status_code=400, detail='Você não possui permissão para adicionar produto')
+        raise HTTPException(status_code=403, detail='Você não possui permissão para adicionar produto')
     
     produto = db.query(Produto).filter(Produto.id == id_produto).first()
     
     if not produto:
-        raise HTTPException(status_code=400, detail='Produto não encontrado')
+        raise HTTPException(status_code=404, detail='Produto não encontrado')
     
     for campo, valor in dados.model_dump(exclude_unset=True).items():
         setattr(produto, campo, valor)
@@ -94,12 +94,12 @@ async def delete_product(
     ):
     
     if usuario.admin is False: # type: ignore
-        raise HTTPException(status_code=400, detail='Você não possui permissão para adicionar produto')
+        raise HTTPException(status_code=403, detail='Você não possui permissão para adicionar produto')
     
     produto = db.query(Produto).filter(Produto.id == id_produto).first()
     
     if not produto:
-        raise HTTPException(status_code=400, detail='Produto não encontrado')
+        raise HTTPException(status_code=404, detail='Produto não encontrado')
     
     db.delete(produto)
     

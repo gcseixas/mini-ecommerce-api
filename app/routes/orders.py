@@ -27,7 +27,7 @@ async def create_pedido(
     user_items_exist = set(dados.ids_itens_carrinho).issubset(ids_item_carrinho)
     
     if not user_items_exist:
-        raise HTTPException(status_code=400, detail='Um dos itens no carrinho inexistente ou não pertence ao usuário')
+        raise HTTPException(status_code=404, detail='Um dos itens no carrinho inexistente ou não pertence ao usuário')
             
     itens_carrinho = db.query(ItensCarrinho).filter(ItensCarrinho.id.in_(dados.ids_itens_carrinho)).all()
         
@@ -80,10 +80,10 @@ async def concluir_pedido(
     pedido = db.query(Pedido).filter(Pedido.id == id_pedido).first()
     
     if not pedido:
-        raise HTTPException(status_code=400, detail='Pedido não encontrado')
+        raise HTTPException(status_code=404, detail='Pedido não encontrado')
     
     if pedido.usuario_id != usuario.id: # type: ignore
-        raise HTTPException(status_code=400, detail='Pedido não pertence ao usuário')
+        raise HTTPException(status_code=403, detail='Pedido não pertence ao usuário')
     
     if pedido.status == 'concluido' or pedido.status == 'cancelado':  # type: ignore
         raise HTTPException(status_code=400, detail=f'Não é possível concluir um pedido com status de {pedido.status}')
@@ -109,13 +109,13 @@ async def cancelar_pedido(
     pedido = db.query(Pedido).filter(Pedido.id == id_pedido).first()
     
     if not pedido:
-        raise HTTPException(status_code=400, detail='Pedido não encontrado')
+        raise HTTPException(status_code=404, detail='Pedido não encontrado')
     
     if pedido.usuario_id != usuario.id: # type: ignore
-        raise HTTPException(status_code=400, detail='Pedido não pertence ao usuário')
+        raise HTTPException(status_code=403, detail='Pedido não pertence ao usuário')
     
     if pedido.status == 'concluido' or pedido.status == 'cancelado':  # type: ignore
-        raise HTTPException(status_code=400, detail=f'Não é possível cancelar um pedido com status de {pedido.status}')
+        raise HTTPException(status_code=403, detail=f'Não é possível cancelar um pedido com status de {pedido.status}')
     
     pedido_id = pedido.id
     
@@ -138,10 +138,10 @@ async def visualizar_pedido_itens(
     pedido = db.query(Pedido).filter(Pedido.id == id_pedido).first()
     
     if not pedido:
-        raise HTTPException(status_code=400, detail='Pedido não encontrado')
+        raise HTTPException(status_code=404, detail='Pedido não encontrado')
     
     if pedido.usuario_id != usuario.id: # type: ignore
-        raise HTTPException(status_code=400, detail='Pedido não pertence ao usuário')
+        raise HTTPException(status_code=403, detail='Pedido não pertence ao usuário')
     
     return pedido
 
@@ -155,7 +155,7 @@ async def visualizar_pedidos(
     pedidos = db.query(Pedido).filter(Pedido.usuario_id == usuario.id).all()
     
     if not pedidos:
-        raise HTTPException(status_code=400, detail='Usuário não possui pedidos')
+        raise HTTPException(status_code=404, detail='Usuário não possui pedidos')
     
     return pedidos
 

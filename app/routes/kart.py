@@ -21,10 +21,10 @@ async def create_item_kart(
     produto = db.query(Produto).filter(Produto.id == dados.produto_id).first()
     
     if not produto:
-        raise HTTPException(status_code=400, detail='Produto não encontrado')
+        raise HTTPException(status_code=404, detail='Produto não encontrado')
 
     if not produto.ativo: # type: ignore
-        raise HTTPException(status_code=400, detail='Produto inativo no momento')
+        raise HTTPException(status_code=403, detail='Produto inativo no momento')
         
     item_carrinho = ItensCarrinho(
         usuario_id=usuario.id,
@@ -55,13 +55,13 @@ async def edit_item_kart(
     produto = BaseService.buscar_por_id(db, Produto, dados.produto_id)
     
     if not item:
-        raise HTTPException(status_code=400, detail='Item no carrinho inextistente')
+        raise HTTPException(status_code=404, detail='Item no carrinho inextistente')
     
     if usuario.id != item.usuario_id: # type: ignore
-        raise HTTPException(status_code=400, detail='Item no carrinho, não pertence ao usuário')
+        raise HTTPException(status_code=403, detail='Item no carrinho, não pertence ao usuário')
     
     if not produto or not produto.ativo:
-        raise HTTPException(status_code=400, detail='O produto não existe ou está indisponível')
+        raise HTTPException(status_code=404, detail='O produto não existe ou está indisponível')
         
     item_atualizar = BaseService.atualizar_campos(item, dados)
 
@@ -82,11 +82,11 @@ async def list_item_carrinho(
     item = db.query(ItensCarrinho).filter(ItensCarrinho.id == id_item_kart).first()
 
     if usuario.id != item.usuario_id: # type: ignore
-        raise HTTPException(status_code=400, detail='Item no carrinho, não pertence ao usuário')
+        raise HTTPException(status_code=403, detail='Item no carrinho, não pertence ao usuário')
     
     
     if not item:
-        raise HTTPException(status_code=400, detail='Item no carrinho inextistente')
+        raise HTTPException(status_code=404, detail='Item no carrinho inextistente')
     
     return {
         'Item': item.produto.nome,
@@ -134,10 +134,10 @@ async def remove_item_carrinho(
     item = db.query(ItensCarrinho).filter(ItensCarrinho.id == id_item_kart).first()
 
     if not item:
-        raise HTTPException(status_code=400, detail='Item no carrinho inextistente')
+        raise HTTPException(status_code=404, detail='Item no carrinho inextistente')
     
     if usuario.id != item.usuario_id: # type: ignore
-        raise HTTPException(status_code=400, detail='Item no carrinho, não pertence ao usuário')
+        raise HTTPException(status_code=403, detail='Item no carrinho, não pertence ao usuário')
     
     nome_item = item.produto.nome
     
@@ -158,7 +158,7 @@ async def empty_items_carrinho(
     items = db.query(ItensCarrinho).filter(ItensCarrinho.usuario_id == usuario.id).all()
     
     if not items:
-        raise HTTPException(status_code=400, detail='Carrinho já está vazio')
+        raise HTTPException(status_code=404, detail='Carrinho já está vazio')
         
     for item in items:
         BaseService.deletar(db, item)

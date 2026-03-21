@@ -15,7 +15,7 @@ async def create_user(dados: UserCreate , db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(Usuario.email == dados.email).first() # type: ignore
     
     if usuario:
-        raise HTTPException(status_code=400, detail='Email de usuário já cadadastro')
+        raise HTTPException(status_code=401, detail='Email de usuário já cadadastro')
     
     senha_crip = gerar_hash_senha(dados.senha)
 
@@ -37,7 +37,7 @@ async def login(dados: UserLogin, db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(Usuario.email == dados.email).first() # type: ignore
     
     if not usuario:
-        raise HTTPException(status_code=400, detail='Usuário não encontrado')
+        raise HTTPException(status_code=401, detail='Usuário não encontrado')
     
     if not verificar_senha(dados.senha, str(usuario.senha)):
         raise HTTPException(status_code=401, detail='Senha inválida')
